@@ -1,0 +1,260 @@
+openapi: 3.0.0
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/menduz8/nft/1.0.0
+info:
+  title: NFT Schema API
+  version: 1.0.0
+paths:
+  /dar:
+    get:
+      summary: Returns a list of Digital Asset Registry (DAR) in this service.
+      operationId: dar_list
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DARList"
+  "/dar/{name}":
+    get:
+      summary: Returns the schema of the scpecified DAR
+      operationId: dar_get_by_name
+      parameters:
+        - name: name
+          in: path
+          description: name of the DAR
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DARSchema"
+  "/dar/{name}/{asset_id}":
+    get:
+      summary: Returns the token and its schema
+      operationId: dar_asset_get
+      parameters:
+        - name: name
+          in: path
+          description: name of the DAR
+          required: true
+          schema:
+            type: string
+        - name: asset_id
+          in: path
+          description: Asset ID
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NFTSchema"
+components:
+  schemas:
+    File:
+      description: A file descriptor.
+      type: object
+      required:
+        - name
+        - url
+      properties:
+        name:
+          type: string
+          description: File name
+        url:
+          type: string
+          description: Permanent URL
+        cid:
+          type: string
+          description: IPFS CID
+        role:
+          type: string
+          description: |
+            A codename to identify what is the intended purpose of this file.
+    TraitDefinition:
+      description: Defines a trait type and its parameters. This is used in registries
+      type: object
+      required:
+        - id
+        - name
+        - type
+      properties:
+        id:
+          type: string
+          description: identifier i.e. "dcl:avatar-speed"
+        name:
+          type: string
+          description: Human-readable name of the trait (for example, “Body type”)
+        display_type:
+          type: string
+          description: Display type.
+        type:
+          enum:
+            - string
+            - int
+            - float
+            - boolean
+            - range
+            - set
+          description: Type of the trait.
+        default_value:
+          type: string
+          description: Default value of the trait, if any
+        min_value:
+          type: number
+          description: Minimum value (if the type is number)
+        max_value:
+          type: number
+          description: Maximum value (if the type is number)
+        options:
+          type: array
+          description: If the type is "set", an object where the keys are the possible values of the trait.
+          items:
+            description: Option value
+            type: string
+    TraitInstance:
+      description: Defines a trait's value. This is used in tokens
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          description: identifier i.e. "dcl:avatar-speed"
+        value:
+          description: Value of the trait
+    DARList:
+      type: object
+      description: A list of registries available in this server.
+      properties:
+        registries:
+          type: array
+          items:
+            $ref: "#/components/schemas/DARRegister"
+          description: The list of registries
+    DARRegister:
+      type: object
+      description: |
+        Element of response of the /dar endpoint. Specifies a name and metadata
+        to describe all the DAR in the service.
+      required:
+        - name
+        - schema_url
+      properties:
+        name:
+          type: string
+          description: A human readable name that identifies the registry
+        common_name:
+          type: string
+          description: A human readable name that can be used as identifier instead of the contract address
+        contract_uri:
+          type: string
+          description: The URI of the contract that stores the NFTs
+          example: ethereum://0xf87e31492faf9a91b02ee0deaad50d51d56d5d4d
+        schema_url:
+          type: string
+          description: Url to locate a full version of the schema
+          example: "https://nft-service.io/dar/0xf87e31492faf9a91b02ee0deaad50d51d56d5d4d"
+        description:
+          type: string
+          description: A brief description of this DAR
+        image_url:
+          type: string
+          description: An image/logo of the DAR, it may be a logo. image/png is required.
+    DARSchema:
+      type: object
+      description: |
+        A global definition for an asset type allows for a standardized
+        treatment of assets. An asset type schema should define what fields are
+        required for valid NFT definition of the asset, as well as any optional
+        fields that make for the NFTs that belong to the registry.
+      required:
+        - name
+        - contract_uri
+        - schema_url
+        - schema_cid
+        - traits
+      properties:
+        name:
+          type: string
+          description: A human readable name that identifies the registry
+        common_name:
+          type: string
+          description: A human readable name that can be used as identifier instead of the contract address
+        contract_uri:
+          type: string
+          description: The URI of the contract that stores the NFTs
+        schema_url:
+          type: string
+          description: Url to locate this same file
+        schema_cid:
+          type: string
+          description: The CID of this same file (with this same field set to empty)
+        traits:
+          type: array
+          description: |
+            A definition of fields that are available for NFTs belonging to this
+            contract. The content of this should be namespaced through a key and
+            define the types of the values that can be assigned to each
+            particular field.
+          items:
+            $ref: "#/components/schemas/TraitDefinition"
+    NFTSchema:
+      description: This is the description of a particular asset.
+      type: object
+      properties:
+        uri:
+          description: >
+            The representation of the token in full, such that the token can be
+            uniquely identified by the contract that minted the NFT. It should
+            specify the blockchain id, which could be one of "ethereum",
+            "ropsten", etc. One thing to consider here is whether this is
+            extensible enough for Ethereum 2.0 shards or even other non-ethereum
+            chains. A mapping of standard networks should be provided by default
+
+            Format: chain://{{registry}}/{{token id}}
+          type: string
+          example: ethereum://0xf87e31492faf9a91b02ee0deaad50d51d56d5d4d/123
+        name:
+          type: string
+          description: Name field of the ERC721 Metadata Schema
+        description:
+          type: string
+          description: Description field of the ERC721 Metadata Schema
+        image:
+          type: string
+          description: Image field of the ERC721 Metadata Schema
+        token_id:
+          type: string
+          description: |
+            The id of the token in the DAR. This field is repeated as to keep
+            the complexity of implementations low.
+        registry:
+          type: string
+          description: The addres of the contract / common name / ticker
+        owner:
+          type: string
+          description: Owner of the token
+        traits:
+          type: array
+          items:
+            $ref: "#/components/schemas/TraitInstance"
+          description: |
+            A list of the trait values of the token. The definitions of the
+            traits are set in the DARSchema
+        files:
+          type: array
+          items:
+            $ref: "#/components/schemas/File"
+          description: |
+            A list of the files related to the NFT
