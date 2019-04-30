@@ -1,12 +1,9 @@
 openapi: 3.0.0
-servers:
-  - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/menduz8/nft/1.0.0
 info:
   title: NFT Schema API
   version: 1.0.0
 paths:
-  /dar:
+  "/dar":
     get:
       summary: Returns a list of Digital Asset Registry (DAR) in this service.
       operationId: dar_list
@@ -17,6 +14,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DARList"
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   "/dar/{name}":
     get:
       summary: Returns the schema of the scpecified DAR
@@ -35,7 +38,13 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DARSchema"
-  "/dar/{name}/{asset_id}":
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  "/dar/{name}/asset/{asset_id}":
     get:
       summary: Returns the token and its schema
       operationId: dar_asset_get
@@ -58,9 +67,76 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/NFTSchema"
+                $ref: "#/components/schemas/AssetSchema"
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  "/dar/{name}/address/{address}":
+    get:
+      summary: Returns a list of assets owned by the user
+      operationId: dar_user_asset_list
+      parameters:
+        - name: name
+          in: path
+          description: name of the DAR
+          required: true
+          schema:
+            type: string
+        - name: address
+          in: path
+          description: Address of the user
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssetList"
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  "/address/{address}":
+    get:
+      summary: Returns a list of all the assets owned by the user
+      operationId: user_asset_list
+      parameters:
+        - name: address
+          in: path
+          description: Address of the user
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssetList"
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 components:
   schemas:
+    Error:
+      description: Error response
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error description
     File:
       description: A file descriptor.
       type: object
@@ -122,7 +198,7 @@ components:
           items:
             description: Option value
             type: string
-    TraitInstance:
+    AssetTrait:
       description: Defines a trait's value. This is used in tokens
       type: object
       required:
@@ -142,6 +218,15 @@ components:
           items:
             $ref: "#/components/schemas/DARRegister"
           description: The list of registries
+    AssetList:
+      type: object
+      description: A list of assets
+      properties:
+        assets:
+          type: array
+          items:
+            $ref: "#/components/schemas/AssetSchema"
+          description: The list of assets
     DARRegister:
       type: object
       description: |
@@ -197,6 +282,12 @@ components:
         schema_url:
           type: string
           description: Url to locate this same file
+        description:
+          type: string
+          description: A brief description of this DAR
+        image_url:
+          type: string
+          description: An image/logo of the DAR, it may be a logo. image/png is required.
         schema_cid:
           type: string
           description: The CID of this same file (with this same field set to empty)
@@ -209,7 +300,7 @@ components:
             particular field.
           items:
             $ref: "#/components/schemas/TraitDefinition"
-    NFTSchema:
+    AssetSchema:
       description: This is the description of a particular asset.
       type: object
       properties:
@@ -248,7 +339,7 @@ components:
         traits:
           type: array
           items:
-            $ref: "#/components/schemas/TraitInstance"
+            $ref: "#/components/schemas/AssetTrait"
           description: |
             A list of the trait values of the token. The definitions of the
             traits are set in the DARSchema
