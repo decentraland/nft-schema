@@ -1,3 +1,2 @@
 build:
-	npx tsc --version
-	npx tsc -p src
+	npx typescript@latest -p src
