@@ -1,0 +1,25 @@
+{
+  "name": "nft-open-api",
+  "version": "1.0.5",
+  "description": "NFT Schema API",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.js",
+  "scripts": {
+    "prepublish": "make build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/decentraland/nft-open-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/decentraland/nft-open-api/issues"
+  },
+  "files": [
+    "openapi.yaml",
+    "dist"
+  ],
+  "homepage": "https://github.com/decentraland/nft-open-api#readme"
+}
