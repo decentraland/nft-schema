@@ -153,8 +153,10 @@ components:
         cid:
           type: string
           description: IPFS CID
-        role:
-          type: string
+        roles:
+          type: array
+          items:
+            type: string
           description: |
             A codename to identify what is the intended purpose of this file.
     TraitDefinition:
