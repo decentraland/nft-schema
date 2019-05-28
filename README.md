@@ -19,3 +19,7 @@ A standardized schema has to be as extensible as possible, so that any DAR creat
 The schema should be restrictive on the possible values for fields, and include or restrict the basic set of fields defined by the ERC721 metadata format: `name`, `description`, and `image`. The current standard doesn’t enforce any particular format for the `image` field, creating unnecessary complexity for implementers.
 
 The standard should dictate a way to specify both a schema for a description of the DAR as well as each NFT. There are a number of properties that apply to all NFTs in a contract equally (for example, all LAND parcels are not wearable items in Decentraland).
+
+### Live API
+
+https://schema.decentraland.org/dar
