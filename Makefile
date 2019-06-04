@@ -1,2 +1,2 @@
 build:
-	npx tsc -p src/tsconfig.json
+	npx typescript -b src/tsconfig.json
