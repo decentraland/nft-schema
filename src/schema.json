@@ -6,6 +6,9 @@
       "type": "object",
       "description": "A list of assets",
       "additionalProperties": false,
+      "required": [
+        "assets"
+      ],
       "properties": {
         "assets": {
           "type": "array",
@@ -65,7 +68,7 @@
         "traits": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/AssetTrait"
+            "$ref": "#/definitions/TraitValue"
           },
           "description": "A list of the trait values of the token. The definitions of the\ntraits are set in the DARSchema\n"
         },
@@ -78,7 +81,7 @@
         }
       }
     },
-    "AssetTrait": {
+    "TraitValue": {
       "description": "Defines a trait's value. This is used in tokens",
       "type": "object",
       "required": [
@@ -91,7 +94,8 @@
           "description": "identifier i.e. \"dcl:avatar-speed\""
         },
         "value": {
-          "description": "Value of the trait"
+          "description": "Value of the trait. Every value is encoded as string.",
+          "type": "string"
         }
       }
     },
@@ -100,6 +104,9 @@
       "type": "object",
       "description": "A list of registries available in this server.",
       "additionalProperties": false,
+      "required": [
+        "registries"
+      ],
       "properties": {
         "registries": {
           "type": "array",
@@ -228,6 +235,13 @@
         "cid": {
           "type": "string",
           "description": "IPFS CID"
+        },
+        "traits": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TraitValue"
+          },
+          "description": "A list of the trait values of the file."
         },
         "roles": {
           "type": "array",

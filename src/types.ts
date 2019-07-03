@@ -18,7 +18,7 @@ export interface AssetList {
   /**
    * The list of assets
    */
-  assets?: AssetSchema[];
+  assets: AssetSchema[];
 }
 /**
  * This is the description of a particular asset.
@@ -64,7 +64,7 @@ export interface AssetSchema {
    * traits are set in the DARSchema
    *
    */
-  traits: AssetTrait[];
+  traits: TraitValue[];
   /**
    * A list of the files related to the NFT
    *
@@ -75,19 +75,17 @@ export interface AssetSchema {
  * Defines a trait's value. This is used in tokens
  *
  * This interface was referenced by `Schema`'s JSON-Schema
- * via the `definition` "AssetTrait".
+ * via the `definition` "TraitValue".
  */
-export interface AssetTrait {
+export interface TraitValue {
   /**
    * identifier i.e. "dcl:avatar-speed"
    */
   id: string;
   /**
-   * Value of the trait
+   * Value of the trait. Every value is encoded as string.
    */
-  value?: {
-    [k: string]: any;
-  };
+  value?: string;
 }
 /**
  * A file descriptor.
@@ -109,6 +107,10 @@ export interface File {
    */
   cid?: string;
   /**
+   * A list of the trait values of the file.
+   */
+  traits?: TraitValue[];
+  /**
    * A codename to identify what is the intended purpose of this file.
    *
    */
@@ -124,7 +126,7 @@ export interface DARList {
   /**
    * The list of registries
    */
-  registries?: DARRegister[];
+  registries: DARRegister[];
 }
 /**
  * Element of response of the /dar endpoint. Specifies a name and metadata
