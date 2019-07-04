@@ -1,0 +1,311 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "AssetList": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "type": "object",
+      "description": "A list of assets",
+      "additionalProperties": false,
+      "required": [
+        "assets"
+      ],
+      "properties": {
+        "assets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AssetSchema"
+          },
+          "description": "The list of assets"
+        }
+      }
+    },
+    "AssetSchema": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "description": "This is the description of a particular asset.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "uri",
+        "name",
+        "description",
+        "image",
+        "token_id",
+        "registry",
+        "owner",
+        "traits",
+        "files"
+      ],
+      "properties": {
+        "uri": {
+          "description": "The representation of the token in full, such that the token can be uniquely identified by the contract that minted the NFT. It should specify the blockchain id, which could be one of \"ethereum\", \"ropsten\", etc. One thing to consider here is whether this is extensible enough for Ethereum 2.0 shards or even other non-ethereum chains. A mapping of standard networks should be provided by default\nFormat: chain://{{registry}}/{{token id}}\n",
+          "type": "string",
+          "example": "ethereum://0xf87e31492faf9a91b02ee0deaad50d51d56d5d4d/123"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name field of the ERC721 Metadata Schema"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description field of the ERC721 Metadata Schema"
+        },
+        "image": {
+          "type": "string",
+          "description": "Image field of the ERC721 Metadata Schema"
+        },
+        "token_id": {
+          "type": "string",
+          "description": "The id of the token in the DAR. This field is repeated as to keep\nthe complexity of implementations low.\n"
+        },
+        "registry": {
+          "type": "string",
+          "description": "The addres of the contract / common name / ticker"
+        },
+        "owner": {
+          "type": "string",
+          "description": "Owner of the token"
+        },
+        "traits": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TraitValue"
+          },
+          "description": "A list of the trait values of the token. The definitions of the\ntraits are set in the DARSchema\n"
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/File"
+          },
+          "description": "A list of the files related to the NFT\n"
+        }
+      }
+    },
+    "TraitValue": {
+      "description": "Defines a trait's value. This is used in tokens",
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "identifier i.e. \"dcl:avatar-speed\""
+        },
+        "value": {
+          "description": "Value of the trait. Every value is encoded as string.",
+          "type": "string"
+        }
+      }
+    },
+    "DARList": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "type": "object",
+      "description": "A list of registries available in this server.",
+      "additionalProperties": false,
+      "required": [
+        "registries"
+      ],
+      "properties": {
+        "registries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DARRegister"
+          },
+          "description": "The list of registries"
+        }
+      }
+    },
+    "DARRegister": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "type": "object",
+      "description": "Element of response of the /dar endpoint. Specifies a name and metadata\nto describe all the DAR in the service.\n",
+      "required": [
+        "name",
+        "schema_url"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "A human readable name that identifies the registry"
+        },
+        "common_name": {
+          "type": "string",
+          "description": "A human readable name that can be used as identifier instead of the contract address"
+        },
+        "contract_uri": {
+          "type": "string",
+          "description": "The URI of the contract that stores the NFTs",
+          "example": "ethereum://0xf87e31492faf9a91b02ee0deaad50d51d56d5d4d"
+        },
+        "schema_url": {
+          "type": "string",
+          "description": "Url to locate a full version of the schema",
+          "example": "https://nft-service.io/dar/0xf87e31492faf9a91b02ee0deaad50d51d56d5d4d"
+        },
+        "description": {
+          "type": "string",
+          "description": "A brief description of this DAR"
+        },
+        "image_url": {
+          "type": "string",
+          "description": "An image/logo of the DAR, it may be a logo. image/png is required."
+        }
+      }
+    },
+    "DARSchema": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "type": "object",
+      "description": "A global definition for an asset type allows for a standardized\ntreatment of assets. An asset type schema should define what fields are\nrequired for valid NFT definition of the asset, as well as any optional\nfields that make for the NFTs that belong to the registry.\n",
+      "required": [
+        "name",
+        "contract_uri",
+        "schema_url",
+        "schema_cid",
+        "traits"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "A human readable name that identifies the registry"
+        },
+        "common_name": {
+          "type": "string",
+          "description": "A human readable name that can be used as identifier instead of the contract address"
+        },
+        "contract_uri": {
+          "type": "string",
+          "description": "The URI of the contract that stores the NFTs"
+        },
+        "schema_url": {
+          "type": "string",
+          "description": "Url to locate this same file"
+        },
+        "description": {
+          "type": "string",
+          "description": "A brief description of this DAR"
+        },
+        "image_url": {
+          "type": "string",
+          "description": "An image/logo of the DAR, it may be a logo. image/png is required."
+        },
+        "schema_cid": {
+          "type": "string",
+          "description": "The CID of this same file (with this same field set to empty)"
+        },
+        "traits": {
+          "type": "array",
+          "description": "A definition of fields that are available for NFTs belonging to this\ncontract. The content of this should be namespaced through a key and\ndefine the types of the values that can be assigned to each\nparticular field.\n",
+          "items": {
+            "$ref": "#/definitions/TraitDefinition"
+          }
+        }
+      }
+    },
+    "ErrorResponse": {
+      "description": "Error response",
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "description": "Error description"
+        }
+      }
+    },
+    "File": {
+      "description": "A file descriptor.",
+      "type": "object",
+      "required": [
+        "name",
+        "url"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "File name"
+        },
+        "url": {
+          "type": "string",
+          "description": "Permanent URL"
+        },
+        "cid": {
+          "type": "string",
+          "description": "IPFS CID"
+        },
+        "traits": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TraitValue"
+          },
+          "description": "A list of the trait values of the file."
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "A codename to identify what is the intended purpose of this file.\n"
+        }
+      }
+    },
+    "TraitDefinition": {
+      "description": "Defines a trait type and its parameters. This is used in registries",
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "type"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "identifier i.e. \"dcl:avatar-speed\""
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable name of the trait (for example, “Body type”)"
+        },
+        "display_type": {
+          "type": "string",
+          "description": "Display type."
+        },
+        "type": {
+          "enum": [
+            "string",
+            "int",
+            "float",
+            "boolean",
+            "range",
+            "set"
+          ],
+          "description": "Type of the trait."
+        },
+        "default_value": {
+          "type": "string",
+          "description": "Default value of the trait, if any"
+        },
+        "min_value": {
+          "type": "number",
+          "description": "Minimum value (if the type is number)"
+        },
+        "max_value": {
+          "type": "number",
+          "description": "Maximum value (if the type is number)"
+        },
+        "options": {
+          "type": "array",
+          "description": "If the type is \"set\", an object where the keys are the possible values of the trait.",
+          "items": {
+            "description": "Option value",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

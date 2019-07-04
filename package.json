@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.js",
   "scripts": {
-    "prepublish": "make build"
+    "prepublish": "make test"
   },
   "repository": {
     "type": "git",
@@ -19,7 +19,15 @@
   },
   "files": [
     "openapi.yaml",
+    "src/schema.json",
     "dist"
   ],
-  "homepage": "https://github.com/decentraland/nft-open-api#readme"
+  "homepage": "https://github.com/decentraland/nft-open-api#readme",
+  "dependencies": {
+    "ajv": "^6.10.0"
+  },
+  "devDependencies": {
+    "expect": "^24.8.0",
+    "mocha": "^6.1.4"
+  }
 }

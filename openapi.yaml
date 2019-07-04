@@ -13,13 +13,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DARList"
+                $ref: "src/schema.json#/definitions/DARList"
         default:
           description: Error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "src/schema.json#/definitions/ErrorResponse"
   "/dar/{name}":
     get:
       summary: Returns the schema of the scpecified DAR
@@ -37,13 +37,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DARSchema"
+                $ref: "src/schema.json#/definitions/DARSchema"
         default:
           description: Error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "src/schema.json#/definitions/ErrorResponse"
   "/dar/{name}/asset/{asset_id}":
     get:
       summary: Returns the token and its schema
@@ -67,13 +67,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AssetSchema"
+                $ref: "src/schema.json#/definitions/AssetSchema"
         default:
           description: Error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "src/schema.json#/definitions/ErrorResponse"
   "/dar/{name}/address/{address}":
     get:
       summary: Returns a list of assets owned by the user
@@ -97,13 +97,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AssetList"
+                $ref: "src/schema.json#/definitions/AssetList"
         default:
           description: Error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "src/schema.json#/definitions/ErrorResponse"
   "/address/{address}":
     get:
       summary: Returns a list of all the assets owned by the user
@@ -121,233 +121,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AssetList"
+                $ref: "src/schema.json#/definitions/AssetList"
         default:
           description: Error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-components:
-  schemas:
-    Error:
-      description: Error response
-      type: object
-      properties:
-        error:
-          type: string
-          description: Error description
-    File:
-      description: A file descriptor.
-      type: object
-      required:
-        - name
-        - url
-      properties:
-        name:
-          type: string
-          description: File name
-        url:
-          type: string
-          description: Permanent URL
-        cid:
-          type: string
-          description: IPFS CID
-        roles:
-          type: array
-          items:
-            type: string
-          description: |
-            A codename to identify what is the intended purpose of this file.
-    TraitDefinition:
-      description: Defines a trait type and its parameters. This is used in registries
-      type: object
-      required:
-        - id
-        - name
-        - type
-      properties:
-        id:
-          type: string
-          description: identifier i.e. "dcl:avatar-speed"
-        name:
-          type: string
-          description: Human-readable name of the trait (for example, “Body type”)
-        display_type:
-          type: string
-          description: Display type.
-        type:
-          enum:
-            - string
-            - int
-            - float
-            - boolean
-            - range
-            - set
-          description: Type of the trait.
-        default_value:
-          type: string
-          description: Default value of the trait, if any
-        min_value:
-          type: number
-          description: Minimum value (if the type is number)
-        max_value:
-          type: number
-          description: Maximum value (if the type is number)
-        options:
-          type: array
-          description: If the type is "set", an object where the keys are the possible values of the trait.
-          items:
-            description: Option value
-            type: string
-    AssetTrait:
-      description: Defines a trait's value. This is used in tokens
-      type: object
-      required:
-        - id
-      properties:
-        id:
-          type: string
-          description: identifier i.e. "dcl:avatar-speed"
-        value:
-          description: Value of the trait
-    DARList:
-      type: object
-      description: A list of registries available in this server.
-      properties:
-        registries:
-          type: array
-          items:
-            $ref: "#/components/schemas/DARRegister"
-          description: The list of registries
-    AssetList:
-      type: object
-      description: A list of assets
-      properties:
-        assets:
-          type: array
-          items:
-            $ref: "#/components/schemas/AssetSchema"
-          description: The list of assets
-    DARRegister:
-      type: object
-      description: |
-        Element of response of the /dar endpoint. Specifies a name and metadata
-        to describe all the DAR in the service.
-      required:
-        - name
-        - schema_url
-      properties:
-        name:
-          type: string
-          description: A human readable name that identifies the registry
-        common_name:
-          type: string
-          description: A human readable name that can be used as identifier instead of the contract address
-        contract_uri:
-          type: string
-          description: The URI of the contract that stores the NFTs
-          example: ethereum://0xf87e31492faf9a91b02ee0deaad50d51d56d5d4d
-        schema_url:
-          type: string
-          description: Url to locate a full version of the schema
-          example: "https://nft-service.io/dar/0xf87e31492faf9a91b02ee0deaad50d51d56d5d4d"
-        description:
-          type: string
-          description: A brief description of this DAR
-        image_url:
-          type: string
-          description: An image/logo of the DAR, it may be a logo. image/png is required.
-    DARSchema:
-      type: object
-      description: |
-        A global definition for an asset type allows for a standardized
-        treatment of assets. An asset type schema should define what fields are
-        required for valid NFT definition of the asset, as well as any optional
-        fields that make for the NFTs that belong to the registry.
-      required:
-        - name
-        - contract_uri
-        - schema_url
-        - schema_cid
-        - traits
-      properties:
-        name:
-          type: string
-          description: A human readable name that identifies the registry
-        common_name:
-          type: string
-          description: A human readable name that can be used as identifier instead of the contract address
-        contract_uri:
-          type: string
-          description: The URI of the contract that stores the NFTs
-        schema_url:
-          type: string
-          description: Url to locate this same file
-        description:
-          type: string
-          description: A brief description of this DAR
-        image_url:
-          type: string
-          description: An image/logo of the DAR, it may be a logo. image/png is required.
-        schema_cid:
-          type: string
-          description: The CID of this same file (with this same field set to empty)
-        traits:
-          type: array
-          description: |
-            A definition of fields that are available for NFTs belonging to this
-            contract. The content of this should be namespaced through a key and
-            define the types of the values that can be assigned to each
-            particular field.
-          items:
-            $ref: "#/components/schemas/TraitDefinition"
-    AssetSchema:
-      description: This is the description of a particular asset.
-      type: object
-      properties:
-        uri:
-          description: >
-            The representation of the token in full, such that the token can be
-            uniquely identified by the contract that minted the NFT. It should
-            specify the blockchain id, which could be one of "ethereum",
-            "ropsten", etc. One thing to consider here is whether this is
-            extensible enough for Ethereum 2.0 shards or even other non-ethereum
-            chains. A mapping of standard networks should be provided by default
-
-            Format: chain://{{registry}}/{{token id}}
-          type: string
-          example: ethereum://0xf87e31492faf9a91b02ee0deaad50d51d56d5d4d/123
-        name:
-          type: string
-          description: Name field of the ERC721 Metadata Schema
-        description:
-          type: string
-          description: Description field of the ERC721 Metadata Schema
-        image:
-          type: string
-          description: Image field of the ERC721 Metadata Schema
-        token_id:
-          type: string
-          description: |
-            The id of the token in the DAR. This field is repeated as to keep
-            the complexity of implementations low.
-        registry:
-          type: string
-          description: The addres of the contract / common name / ticker
-        owner:
-          type: string
-          description: Owner of the token
-        traits:
-          type: array
-          items:
-            $ref: "#/components/schemas/AssetTrait"
-          description: |
-            A list of the trait values of the token. The definitions of the
-            traits are set in the DARSchema
-        files:
-          type: array
-          items:
-            $ref: "#/components/schemas/File"
-          description: |
-            A list of the files related to the NFT
+                $ref: "src/schema.json#/definitions/ErrorResponse"
