@@ -37,7 +37,7 @@
       ],
       "properties": {
         "uri": {
-          "description": "The representation of the token in full, such that the token can be uniquely identified by the contract that minted the NFT. It should specify the blockchain id, which could be one of \"ethereum\", \"ropsten\", etc. One thing to consider here is whether this is extensible enough for Ethereum 2.0 shards or even other non-ethereum chains. A mapping of standard networks should be provided by default\nFormat: chain://{{registry}}/{{token id}}\n",
+          "description": "The representation of the token in full, such that the token can be uniquely identified by the contract that minted the NFT. It should specify the blockchain id, which could be one of \"ethereum\", \"ropsten\", etc. One thing to consider here is whether this is extensible enough for Ethereum 2.0 shards or even other non-ethereum chains. A mapping of standard networks should be provided by default Format: chain://{{registry}}/{{token id}} ",
           "type": "string",
           "example": "ethereum://0xf87e31492faf9a91b02ee0deaad50d51d56d5d4d/123"
         },
@@ -55,7 +55,7 @@
         },
         "token_id": {
           "type": "string",
-          "description": "The id of the token in the DAR. This field is repeated as to keep\nthe complexity of implementations low.\n"
+          "description": "The id of the token in the DAR. This field is repeated as to keep the complexity of implementations low. "
         },
         "registry": {
           "type": "string",
@@ -70,14 +70,14 @@
           "items": {
             "$ref": "#/definitions/TraitValue"
           },
-          "description": "A list of the trait values of the token. The definitions of the\ntraits are set in the DARSchema\n"
+          "description": "A list of the trait values of the token. The definitions of the traits are set in the DARSchema "
         },
         "files": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/File"
           },
-          "description": "A list of the files related to the NFT\n"
+          "description": "A list of the files related to the NFT "
         }
       }
     },
@@ -120,7 +120,7 @@
     "DARRegister": {
       "$schema": "http://json-schema.org/draft-07/schema#",
       "type": "object",
-      "description": "Element of response of the /dar endpoint. Specifies a name and metadata\nto describe all the DAR in the service.\n",
+      "description": "Element of response of the /dar endpoint. Specifies a name and metadata to describe all the DAR in the service. ",
       "required": [
         "name",
         "schema_url"
@@ -158,12 +158,11 @@
     "DARSchema": {
       "$schema": "http://json-schema.org/draft-07/schema#",
       "type": "object",
-      "description": "A global definition for an asset type allows for a standardized\ntreatment of assets. An asset type schema should define what fields are\nrequired for valid NFT definition of the asset, as well as any optional\nfields that make for the NFTs that belong to the registry.\n",
+      "description": "A global definition for an asset type allows for a standardized treatment of assets. An asset type schema should define what fields are required for valid NFT definition of the asset, as well as any optional fields that make for the NFTs that belong to the registry. ",
       "required": [
         "name",
         "contract_uri",
         "schema_url",
-        "schema_cid",
         "traits"
       ],
       "additionalProperties": false,
@@ -198,7 +197,7 @@
         },
         "traits": {
           "type": "array",
-          "description": "A definition of fields that are available for NFTs belonging to this\ncontract. The content of this should be namespaced through a key and\ndefine the types of the values that can be assigned to each\nparticular field.\n",
+          "description": "A definition of fields that are available for NFTs belonging to this contract. The content of this should be namespaced through a key and define the types of the values that can be assigned to each particular field. ",
           "items": {
             "$ref": "#/definitions/TraitDefinition"
           }
@@ -248,7 +247,7 @@
           "items": {
             "type": "string"
           },
-          "description": "A codename to identify what is the intended purpose of this file.\n"
+          "description": "A codename to identify what is the intended purpose of this file. "
         }
       }
     },
@@ -268,11 +267,17 @@
         },
         "name": {
           "type": "string",
-          "description": "Human-readable name of the trait (for example, “Body type”)"
+          "description": "Human-readable name of the trait (for example, \"Body type\")",
+          "examples": [
+            "Body type"
+          ]
         },
         "display_type": {
           "type": "string",
-          "description": "Display type."
+          "description": "Display type.",
+          "examples": [
+            "string"
+          ]
         },
         "type": {
           "enum": [

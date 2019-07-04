@@ -28,9 +28,7 @@ export interface AssetList {
  */
 export interface AssetSchema {
   /**
-   * The representation of the token in full, such that the token can be uniquely identified by the contract that minted the NFT. It should specify the blockchain id, which could be one of "ethereum", "ropsten", etc. One thing to consider here is whether this is extensible enough for Ethereum 2.0 shards or even other non-ethereum chains. A mapping of standard networks should be provided by default
-   * Format: chain://{{registry}}/{{token id}}
-   *
+   * The representation of the token in full, such that the token can be uniquely identified by the contract that minted the NFT. It should specify the blockchain id, which could be one of "ethereum", "ropsten", etc. One thing to consider here is whether this is extensible enough for Ethereum 2.0 shards or even other non-ethereum chains. A mapping of standard networks should be provided by default Format: chain://{{registry}}/{{token id}}
    */
   uri: string;
   /**
@@ -46,9 +44,7 @@ export interface AssetSchema {
    */
   image: string;
   /**
-   * The id of the token in the DAR. This field is repeated as to keep
-   * the complexity of implementations low.
-   *
+   * The id of the token in the DAR. This field is repeated as to keep the complexity of implementations low.
    */
   token_id: string;
   /**
@@ -60,14 +56,11 @@ export interface AssetSchema {
    */
   owner: string;
   /**
-   * A list of the trait values of the token. The definitions of the
-   * traits are set in the DARSchema
-   *
+   * A list of the trait values of the token. The definitions of the traits are set in the DARSchema
    */
   traits: TraitValue[];
   /**
    * A list of the files related to the NFT
-   *
    */
   files: File[];
 }
@@ -112,7 +105,6 @@ export interface File {
   traits?: TraitValue[];
   /**
    * A codename to identify what is the intended purpose of this file.
-   *
    */
   roles?: string[];
 }
@@ -129,9 +121,7 @@ export interface DARList {
   registries: DARRegister[];
 }
 /**
- * Element of response of the /dar endpoint. Specifies a name and metadata
- * to describe all the DAR in the service.
- *
+ * Element of response of the /dar endpoint. Specifies a name and metadata to describe all the DAR in the service.
  *
  * This interface was referenced by `Schema`'s JSON-Schema
  * via the `definition` "DARRegister".
@@ -163,11 +153,7 @@ export interface DARRegister {
   image_url?: string;
 }
 /**
- * A global definition for an asset type allows for a standardized
- * treatment of assets. An asset type schema should define what fields are
- * required for valid NFT definition of the asset, as well as any optional
- * fields that make for the NFTs that belong to the registry.
- *
+ * A global definition for an asset type allows for a standardized treatment of assets. An asset type schema should define what fields are required for valid NFT definition of the asset, as well as any optional fields that make for the NFTs that belong to the registry.
  *
  * This interface was referenced by `Schema`'s JSON-Schema
  * via the `definition` "DARSchema".
@@ -200,13 +186,9 @@ export interface DARSchema {
   /**
    * The CID of this same file (with this same field set to empty)
    */
-  schema_cid: string;
+  schema_cid?: string;
   /**
-   * A definition of fields that are available for NFTs belonging to this
-   * contract. The content of this should be namespaced through a key and
-   * define the types of the values that can be assigned to each
-   * particular field.
-   *
+   * A definition of fields that are available for NFTs belonging to this contract. The content of this should be namespaced through a key and define the types of the values that can be assigned to each particular field.
    */
   traits: TraitDefinition[];
 }
@@ -222,7 +204,7 @@ export interface TraitDefinition {
    */
   id: string;
   /**
-   * Human-readable name of the trait (for example, “Body type”)
+   * Human-readable name of the trait (for example, "Body type")
    */
   name: string;
   /**
